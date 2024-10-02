@@ -27,7 +27,7 @@ def main():
 
     while True:
         local_height = get_block_height(f"http://localhost:{rpc_port}/status")
-        network_height = get_block_height("https://story-testnet-rpc.itrocket.net/status")
+        network_height = get_block_height("https://story-testnet-rpc.zstake.xyz/status")
 
         if local_height is None or network_height is None:
             print("\033[1;31mError: Invalid block height data. Retrying...\033[0m")
