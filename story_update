@@ -1,7 +1,7 @@
 import os
 
 def main():
-    # 사용자로부터 버전 입력 받기
+    # user input version
     version = input("Enter the version (e.g., v0.10.1): ")
     if not version:
         version = "v0.10.1"
