@@ -1,0 +1,27 @@
+import os
+
+def main():
+    # 사용자로부터 버전 입력 받기
+    version = input("Enter the version (e.g., v0.10.1): ")
+    if not version:
+        version = "v0.10.1"
+        print("Note: v0.10.1 is the latest version.")
+
+    # 실행할 명령어들
+    commands = [
+        "cd $HOME",
+        "rm -rf story",
+        "git clone https://github.com/piplabs/story",
+        "cd $HOME/story",
+        f"git checkout {version}",
+        "go build -o story ./client",
+        "sudo mv $HOME/story/story $(which story)",
+        "sudo systemctl restart story && sudo journalctl -u story -f"
+    ]
+
+    # 명령어 실행
+    for command in commands:
+        os.system(command)
+
+if __name__ == "__main__":
+    main()
