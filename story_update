@@ -2,10 +2,10 @@ import os
 
 def main():
     # user input version
-    version = input("Enter the version (e.g., v0.10.1): ")
+    version = input("Enter the version (e.g., v0.12.0): ")
     if not version:
-        version = "v0.10.1"
-        print("Note: v0.10.1 is the latest version.")
+        version = "v0.12.0"
+        print("Note: v0.12.0 is the latest version.")
 
     # 실행할 명령어들
     commands = [
