@@ -1,48 +1,21 @@
-import os
-import time
-import requests
-import subprocess
-from datetime import timedelta
+#!/bin/bash
+rpc_port=$(grep -m 1 -oP '^laddr = "\K[^"]+' "$HOME/.story/story/config/config.toml" | cut -d ':' -f 3)
+while true; do
+  local_height=$(curl -s localhost:$rpc_port/status | jq -r '.result.sync_info.latest_block_height')
+  network_height=$(curl -s https://story-testnet-rpc.itrocket.net/status | jq -r '.result.sync_info.latest_block_height')
 
-def get_rpc_port():
-    config_path = os.path.expanduser("~/.story/story/config/config.toml")
-    with open(config_path, 'r') as file:
-        for line in file:
-            if line.startswith('laddr'):
-                return line.split(':')[2].strip().strip('"')
+  if ! [[ "$local_height" =~ ^[0-9]+$ ]] || ! [[ "$network_height" =~ ^[0-9]+$ ]]; then
+    echo -e "\033[1;31mError: Invalid block height data. Retrying...\033[0m"
+    sleep 5
+    continue
+  fi
 
-def get_block_height(url):
-    try:
-        response = requests.get(url)
-        response.raise_for_status()
-        return int(response.json()['result']['sync_info']['latest_block_height'])
-    except (requests.RequestException, ValueError, KeyError):
-        return None
+  blocks_left=$((network_height - local_height))
+  if [ "$blocks_left" -lt 0 ]; then
+    blocks_left=0
+  fi
 
-def main():
-    rpc_port = get_rpc_port()
-    if not rpc_port:
-        print("\033[1;31mError: Unable to find RPC port.\033[0m")
-        return
+  echo -e "\033[1;33m당신의 노드 블럭 높이:\033[1;34m $local_height\033[0m \033[1;33m| 네트워크 블럭 높이:\033[1;36m $network_height\033[0m \033[1;33m| 동기화 남은 블럭수:\033[1;31m $blocks_left\033[0m"
 
-    while True:
-        local_height = get_block_height(f"http://localhost:{rpc_port}/status")
-        network_height = get_block_height("https://story-testnet-rpc.zstake.xyz/status")
-
-        if local_height is None or network_height is None:
-            print("\033[1;31mError: Invalid block height data. Retrying...\033[0m")
-            time.sleep(5)
-            continue
-
-        blocks_left = max(0, network_height - local_height)
-        sync_time_left = timedelta(seconds=blocks_left * 5)  # Assuming 5 seconds per block
-
-        print(f"\033[1;33m| 당신의 노드 블럭 정보:\033[1;34m {local_height}\033[0m "
-              f"\033[1;33m| 체인의 최신 블럭 정보:\033[1;36m {network_height}\033[0m "
-              f"\033[1;33m| 동기화 남은 블럭수:\033[1;31m {blocks_left}\033[0m "
-              f"\033[1;33m| 동기화 남은 예상시간:\033[1;32m {sync_time_left}\033[0m")
-
-        time.sleep(5)
-
-if __name__ == "__main__":
-    main()
+  sleep 5
+done
