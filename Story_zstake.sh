@@ -22,6 +22,12 @@ update_story() {
     python3 story_update
 }
 
+# Function to update Story to the latest version
+Cosmovisor_story() {
+    wget https://raw.githubusercontent.com/zstake-xyz/story/refs/heads/main/Cosmovisor_story
+    python3 Cosmovisor_story
+}
+
 # Display menu and prompt user for input
 echo "Story Protocol 자동 설치 프로그램에 오신 것을 환영합니다."
 echo "1. Odyssey Testnet Validator 설치 "
