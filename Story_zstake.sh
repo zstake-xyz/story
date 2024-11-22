@@ -23,11 +23,12 @@ update_story() {
 }
 
 # Display menu and prompt user for input
-echo "Please select an option:"
-echo "1. Install Story automatically"
-echo "2. Check Story node synchronization status"
-echo "3. Update Story to the latest version"
-read -p "Enter the number of your choice: " choice
+echo "Story Protocol 자동 설치 프로그램에 오신 것을 환영합니다."
+echo "1. Odyssey Testnet Validator 설치 "
+echo "2. Odyssey 서버 동기화 상태 확인"
+echo "3. Odyssey Testnet 최신 버전 업데이트(V0.13.0)"
+echo "4. Cosmovisor 자동 업데이트 프로그램 설치"
+read -p "원하는 메뉴의 번호를 입력하세요 : " choice
 
 # Execute the corresponding function based on user input
 case $choice in
@@ -40,7 +41,10 @@ case $choice in
     3)
         update_story
         ;;
+    4)
+        Cosmovisor_story
+        ;;
     *)
-        echo "Invalid choice. Please run the script again and select a valid option."
+        echo "잘못된 선택입니다. 올바른 번호를 입력하세요"
         ;;
 esac
