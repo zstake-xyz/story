@@ -37,10 +37,10 @@ def main():
         blocks_left = max(0, network_height - local_height)
         sync_time_left = timedelta(seconds=blocks_left * 5)  # Assuming 5 seconds per block
 
-        print(f"\033[1;33mYour Node Height:\033[1;34m {local_height}\033[0m "
-              f"\033[1;33m| Network Height:\033[1;36m {network_height}\033[0m "
-              f"\033[1;33m| Blocks Left:\033[1;31m {blocks_left}\033[0m "
-              f"\033[1;33m| Estimated Time Left:\033[1;32m {sync_time_left}\033[0m")
+        print(f"\033[1;33m| 당신의 노드 블럭 정보:\033[1;34m {local_height}\033[0m "
+              f"\033[1;33m| 체인의 최신 블럭 정보:\033[1;36m {network_height}\033[0m "
+              f"\033[1;33m| 동기화 남은 블럭수:\033[1;31m {blocks_left}\033[0m "
+              f"\033[1;33m| 동기화 남은 예상시간:\033[1;32m {sync_time_left}\033[0m")
 
         time.sleep(5)
 
